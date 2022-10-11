@@ -38,6 +38,19 @@ public class MatchingEngine {
     }
 
     @Transactional
+    public void balanceBook(OrderBook orderBook) {
+        var lock = orderBookLocker.getOrderBookLock(orderBook);
+        lock.lock();
+        try {
+            var buyOrders = orderRepository.findActiveBuyOrders(orderBook);
+            var sellOrders = orderRepository.findActiveSellOrders(orderBook);
+            balanceOrders(buyOrders, sellOrders);
+        } finally {
+            lock.unlock();
+        }
+    }
+
+    @Transactional
     public void balanceOrders(List<Order> buyOrders, List<Order> sellOrders) {
         for(var buyOrder : buyOrders) {
             while(buyOrder.getState() == OrderState.ACTIVE) {
@@ -77,18 +90,5 @@ public class MatchingEngine {
         }
         var event = new LogEvent(message, log);
         applicationEventPublisher.publishEvent(event);
-    }
-
-    @Transactional
-    public void balanceBook(OrderBook orderBook) {
-        var lock = orderBookLocker.getOrderBookLock(orderBook);
-        lock.lock();
-        try {
-            var buyOrders = orderRepository.findActiveOrders(orderBook, Order.OrderType.BUY);
-            var sellOrders = orderRepository.findActiveOrders(orderBook, Order.OrderType.SELL);
-            balanceOrders(buyOrders, sellOrders);
-        } finally {
-            lock.unlock();
-        }
     }
 }

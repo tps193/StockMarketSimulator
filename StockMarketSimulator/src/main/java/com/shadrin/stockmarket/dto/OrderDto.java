@@ -1,6 +1,6 @@
 package com.shadrin.stockmarket.dto;
 
-import com.shadrin.stockmarket.model.Order;
+import com.shadrin.stockmarket.model.OrderType;
 
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
@@ -14,7 +14,7 @@ public class OrderDto {
     @Min(value = 1)
     private int count;
     @NotNull
-    private Order.OrderType type;
+    private OrderType type;
 
     public String getSymbol() {
         return symbol;
@@ -40,11 +40,11 @@ public class OrderDto {
         this.count = count;
     }
 
-    public Order.OrderType getType() {
+    public OrderType getType() {
         return type;
     }
 
-    public void setType(Order.OrderType type) {
+    public void setType(OrderType type) {
         this.type = type;
     }
 

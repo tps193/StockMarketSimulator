@@ -83,11 +83,6 @@ public class Order {
         return orderBook;
     }
 
-    public enum OrderType {
-        BUY,
-        SELL
-    }
-
     public String prettyPrint() {
         return String.format("Order {ID=%d, %s %s %d @ %d}", id, orderBook.getSymbol(), type, count, price);
     }
