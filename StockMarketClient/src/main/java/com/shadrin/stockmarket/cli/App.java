@@ -91,7 +91,7 @@ public class App {
 
     public static void exitWithError(String message) {
         System.err.println(message);
-        System.err.println("Usage: java -jar stock-market-cli.jar <URL>");
+        System.err.println("Usage: StockMarketClient <URL>");
         System.exit(1);
     }
 }
