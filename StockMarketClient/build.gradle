@@ -1,0 +1,16 @@
+plugins {
+    id 'application'
+}
+
+group = 'com.shadrin.stock-market-cli'
+version = '0.0.1-alpha'
+sourceCompatibility = '17'
+
+
+dependencies {
+    implementation 'com.squareup.okhttp3:okhttp:4.10.0'
+}
+
+application {
+    mainClassName = "com.shadrin.stockmarket.cli.App"
+}
