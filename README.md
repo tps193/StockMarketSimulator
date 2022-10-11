@@ -44,25 +44,25 @@ It will run the client and connect it to the websocket of the simulator for retr
 Websocket connection for listening for new trades is available at /trades-ws endpoint.
 
 ##### The logic for order matching is following
-Before balancing both Buy and Sell orders are ordered.
-Buy orders are sorted by ID (aka by timestamp because ID is incremental). It means that a Buy order created first will be processed first.
-Sell orders are ordered by price from lower to higher. It means that sell order with lowest price will be processed first.
-The matching logic is following:
-If order is filled partially it is not removed from the list, but instead it is modified to buy/sell leftover stocks.
-For example:
-add APPL SELL 5 20 (id 1)
-add APPL SELL 5 10 (id 2)
-add APPL BUY 10 100 (id 3)
-Sell orders will be ordered like -> id2, id1
-The matching order will be following:
-new Trade(id=1, APPL 5 @ 10, orders 2 and order 3)
-order (APPL BUY 10 @ 100 (id 3)) is partially filled and modified to (APPL BUY 5 @ 100 (id 3))
-order (APPL SELL 5 @ 10 (id 2)) is fully filled and closed.
-Application will not switch to next BUY order because higher priority BUY order (id=3) is still the list, so it will try to match it with next available SELL order. What happens next:
-new Trade(id=2, APPL 5 @ 20, orders 1 and order 3)
-order (APPL BUY 10 @ 100 (id 3)) is fully filled and closed.
-order (APPL SELL 5 @ 20 (id 1)) is fully filled and closed.
-The app switches to the next BUY order in the list.
+Before balancing both Buy and Sell orders are ordered.\
+Buy orders are sorted by ID (aka by timestamp because ID is incremental). It means that a Buy order created first will be processed first.\
+Sell orders are ordered by price from lower to higher. It means that sell order with lowest price will be processed first.\
+The matching logic is following:\
+If order is filled partially it is not removed from the list, but instead it is modified to buy/sell leftover stocks.\
+For example:\
+add APPL SELL 5 20 (id 1)\
+add APPL SELL 5 10 (id 2)\
+add APPL BUY 10 100 (id 3)\
+Sell orders will be ordered like -> id2, id1\
+The matching order will be following:\
+new Trade(id=1, APPL 5 @ 10, orders 2 and order 3)\
+order (APPL BUY 10 @ 100 (id 3)) is partially filled and modified to (APPL BUY 5 @ 100 (id 3))\
+order (APPL SELL 5 @ 10 (id 2)) is fully filled and closed.\
+Application will not switch to next BUY order because higher priority BUY order (id=3) is still the list, so it will try to match it with next available SELL order. What happens next:\
+new Trade(id=2, APPL 5 @ 20, orders 1 and order 3)\
+order (APPL BUY 10 @ 100 (id 3)) is fully filled and closed.\
+order (APPL SELL 5 @ 20 (id 1)) is fully filled and closed.\
+The app switches to the next BUY order in the list.\
 
 ### Stock Market Client interface
 
