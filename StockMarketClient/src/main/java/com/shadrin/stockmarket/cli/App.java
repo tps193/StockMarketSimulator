@@ -5,12 +5,11 @@ import com.shadrin.stockmarket.cli.websocket.AppWebSocketListener;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Arrays;
+import java.util.Scanner;
 
 public class App {
     public static void main(String...args) {
@@ -36,21 +35,19 @@ public class App {
         pingServer(okHttpClient, url);
         connectWebSocket(okHttpClient, url);
 
-        try (var is = new InputStreamReader(System.in); var reader = new BufferedReader(is)) {
-            var actionCreator = new ActionCreator(url.toString(), okHttpClient);
-            while(true) {
-                if(reader.ready()) {
-                    var userInput = reader.readLine();
-                    try {
-                        var action = actionCreator.getAction(userInput);
-                        action.run();
-                    } catch (CommandLineParseException e) {
-                        System.err.println(e.getMessage());
-                    }
-                }
 
+        var actionCreator = new ActionCreator(url.toString(), okHttpClient);
+        try (var scanner = new Scanner(System.in)) {
+            while(scanner.hasNextLine()) {
+                var userInput = scanner.nextLine();
+                try {
+                    var action = actionCreator.getAction(userInput);
+                    action.run();
+                } catch (CommandLineParseException e) {
+                    System.err.println(e.getMessage());
+                }
             }
-        } catch (IOException e) {
+        } catch (Exception e) {
             System.err.println("Error reading user input. " + e.getMessage());
             System.exit(1);
         }
